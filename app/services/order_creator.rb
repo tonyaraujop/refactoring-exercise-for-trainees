@@ -1,14 +1,7 @@
 class OrderCreator < ApplicationService
-  def initialize(user:, first_name:, last_name:, address_1:, address_2:, city:, state:, country:, zip:)
+  def initialize(address_params, user)
+    @address_params = address_params
     @user = user
-    @first_name = first_name
-    @last_name = last_name
-    @address_1 = address_1
-    @address_2 = address_2
-    @city = city
-    @state = state 
-    @country = country
-    @zip = zip
   end
 
   def call
@@ -17,6 +10,17 @@ class OrderCreator < ApplicationService
 
   private
 
-  def create_order
+  def create_order 
+    Order.new(
+      user: @user,
+      first_name: @user.first_name,
+      last_name: @user.last_name,
+      address_1: @address_params[:address_1],
+      address_2: @address_params[:address_2],
+      city: @address_params[:city],
+      state: @address_params[:state],
+      country: @address_params[:country],
+      zip: @address_params[:zip],
+    )
   end
 end
