@@ -10,6 +10,8 @@ class OrderItemCreator < ApplicationService
 
   private
 
+  SHIPPING_COSTS = 100
+  
   def create_order_items 
     @cart.items.each do |item|
       item.quantity.times do
@@ -17,15 +19,11 @@ class OrderItemCreator < ApplicationService
           order: @order,
           sale: item.sale,
           unit_price_cents: item.sale.unit_price_cents,
-          shipping_costs_cents: shipping_costs,
-          paid_price_cents: item.sale.unit_price_cents + shipping_costs
+          shipping_costs_cents: SHIPPING_COSTS,
+          paid_price_cents: item.sale.unit_price_cents + SHIPPING_COSTS
         )
       end
     end
-    @order.save
-  end
-
-  def shipping_costs
-    100
+    @order
   end
 end

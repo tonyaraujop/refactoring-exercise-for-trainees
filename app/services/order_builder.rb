@@ -1,16 +1,16 @@
-class OrderCreator < ApplicationService
+class OrderBuilder < ApplicationService
   def initialize(address_params, user)
     @address_params = address_params
     @user = user
   end
 
   def call
-    create_order
+    build_order
   end
 
   private
 
-  def create_order 
+  def build_order 
     Order.new(
       user: @user,
       first_name: @user.first_name,
