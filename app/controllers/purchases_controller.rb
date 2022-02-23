@@ -3,7 +3,7 @@ class PurchasesController < ApplicationController
     return render json: { errors: [{ message: 'Gateway not supported!' }] },
       status: :unprocessable_entity unless gateway_valid?
 
-    @cart = CartCreator.call(purchase_params)  
+    @cart = CartFinder.call(purchase_params)
     return render json: { errors: [{ message: 'Cart not found!' }] },
       status: :unprocessable_entity unless @cart
 
@@ -13,7 +13,7 @@ class PurchasesController < ApplicationController
 
     @order = OrderCreator.call(address_params, @user)
     
-    OrderItemCreator.call(@cart, @order, shipping_costs)
+    OrderItemCreator.call(@cart, @order)
 
     return render json: { errors: @order.errors.map(&:full_message).map { |message| { message: message } } },
       status: :unprocessable_entity unless @order.valid?
@@ -32,10 +32,6 @@ class PurchasesController < ApplicationController
 
   def address_params
     purchase_params[:address] || {}
-  end
-
-  def shipping_costs
-    100
   end
 
   def gateway_params 

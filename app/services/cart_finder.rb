@@ -1,4 +1,4 @@
-class CartCreator < ApplicationService
+class CartFinder < ApplicationService
   def initialize(purchase_params)
     @purchase_params = purchase_params
   end
@@ -10,6 +10,6 @@ class CartCreator < ApplicationService
   private
 
   def create_cart
-    @cart = Cart.find_by(id: @purchase_params[:cart_id])
+    Cart.find_by(id: @purchase_params[:cart_id])
   end
 end

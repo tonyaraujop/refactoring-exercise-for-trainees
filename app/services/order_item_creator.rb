@@ -1,8 +1,7 @@
 class OrderItemCreator < ApplicationService
-  def initialize(cart, order, shipping_costs)
+  def initialize(cart, order)
     @cart = cart
     @order = order
-    @shipping_costs = shipping_costs
   end
 
   def call
@@ -18,11 +17,15 @@ class OrderItemCreator < ApplicationService
           order: @order,
           sale: item.sale,
           unit_price_cents: item.sale.unit_price_cents,
-          shipping_costs_cents: @shipping_costs,
-          paid_price_cents: item.sale.unit_price_cents + @shipping_costs
+          shipping_costs_cents: shipping_costs,
+          paid_price_cents: item.sale.unit_price_cents + shipping_costs
         )
       end
     end
     @order.save
+  end
+
+  def shipping_costs
+    100
   end
 end
